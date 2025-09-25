@@ -1,6 +1,8 @@
+import json
 import logging
 from enum import Enum
 from pathlib import Path
+from typing import Dict
 
 import pytest
 from playwright.sync_api import sync_playwright
@@ -10,6 +12,7 @@ from framework.logger import logger
 from framework.ui.browser.browser import Browser
 from framework.ui.browser.window import DEFAULT_VIEWPORT_SIZE
 from framework.ui.constants.timeouts import WaitTimeoutsMs
+from framework.utils.config_parser import get_config_value
 
 PROJECT_ROOT_DIR = Path(__file__).parent.resolve()
 
@@ -63,3 +66,23 @@ def browser(request):
         # Close the browser after the test is done
         browser_instance.page.close()
         browser_instance.page.context.browser.close()
+
+
+@pytest.fixture(scope="module")
+def set_basic_auth(browser: Browser, test_config: Dict[str, str]):
+    user = get_config_value(test_config, "user", required=True)
+    password = get_config_value(test_config, "password", required=True)
+
+    browser.set_basic_authentication(user, password)
+
+
+@pytest.fixture(scope="session")
+def test_config(request) -> Dict[str, str]:
+    config_file = request.config.getoption("--config")
+    config_path = PROJECT_ROOT_DIR.joinpath(config_file).resolve()
+    try:
+        with open(config_path, "r") as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        raise Exception(f"Configuration file not fond at: {config_path}")
+    return data
