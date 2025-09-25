@@ -12,6 +12,7 @@ from framework.logger import logger
 from framework.ui.browser.browser import Browser
 from framework.ui.browser.window import DEFAULT_VIEWPORT_SIZE
 from framework.ui.constants.timeouts import WaitTimeoutsMs
+from framework.utils import file_utils
 from framework.utils.config_parser import get_config_value
 
 PROJECT_ROOT_DIR = Path(__file__).parent.resolve()
@@ -86,3 +87,35 @@ def test_config(request) -> Dict[str, str]:
     except FileNotFoundError:
         raise Exception(f"Configuration file not fond at: {config_path}")
     return data
+
+
+@pytest.fixture
+def test_file_name(test_config: Dict[str, str]) -> str:
+    return get_config_value(test_config, "download_file_name")
+
+
+@pytest.fixture
+def file_for_upload(test_config: Dict[str, str]) -> Path:
+    file_name = get_config_value(test_config, "file_for_upload")
+    resource_dir = get_config_value(test_config, "source_dir")
+    file_path = Path(resource_dir, file_name).resolve()
+
+    if not file_path.is_file():
+        raise FileNotFoundError(f"File for upload not found: {file_path}")
+
+    return file_path
+
+
+@pytest.fixture
+def download_dir(test_config: Dict[str, str]) -> Path:
+    download_dir = get_config_value(test_config, "download_dir")
+    return Path(download_dir).resolve()
+
+
+@pytest.fixture
+def cleanup_download_dir(download_dir: Path) -> Path:
+    file_utils.remove_dir_if_exist(download_dir)
+    try:
+        yield download_dir
+    finally:
+        file_utils.remove_dir_if_exist(download_dir)
