@@ -9,7 +9,7 @@ class MainPage(BasePage):
         header_locator = page.locator('h1:has-text("Welcome to the-internet")')
         super().__init__(page, header_locator, "Main Page")
 
-        self._navigation_link = lambda text: self.page.get_by_text(text)
+        self._navigation_link = lambda text: self.page.get_by_text(text, exact=True)
 
     def click_navigation_link(self, navigation_text):
         self._navigation_link(navigation_text).click()
