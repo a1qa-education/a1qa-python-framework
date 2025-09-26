@@ -3,5 +3,6 @@
   "password": "",
   "download_file_name": "test.txt",
   "download_dir": "./downloads",
-  "file_for_upload": "test_file.txt"
+  "file_for_upload": "test_file.txt",
+  "source_dir": "resources"
 }
