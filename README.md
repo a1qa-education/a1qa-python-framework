@@ -1,34 +1,61 @@
-# Automated Testing Project
+# Python BDD Automation Framework
 
-This project is designed for automated testing using Playwright and Pytest frameworks.
+A framework for test automation using the Behavior Driven Development (BDD) approach.
 
-## Installing Dependencies
+## 🛠️ Technologies
 
-To get started, install the necessary dependencies by running command:
+- ![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square&logo=python)
+- ![Behave](https://img.shields.io/badge/Behave-1.2.6-green?style=flat-square)
+- ![Playwright](https://img.shields.io/badge/Playwright-1.48.0-yellow?style=flat-square&logo=playwright)
+- ![Allure](https://img.shields.io/badge/Allure-2.8.0-orange?style=flat-square&logo=qameta)
 
-```sh
-pip install -r requirements.txt
+## 🚀 Running Tests
+
+### Basic Run of All Tests
+
+```bash
+# Run all tests
+behave
 ```
 
-## Running Tests with Markers
+### Running a Specific Feature File
 
-You can run tests using markers with the `-m` flag. For example:
-
-```sh
-pytest -m alerts
+```bash
+# Run specific feature
+behave tests/features/your_test_feature.feature
 ```
 
-For more details of running tests with Pytest, see [Running Tests with Pytest](https://docs.pytest.org/en/latest/how-to/usage.html).
+### Running Tests by Tags
 
-## Running Tests with different options
+```bash
+# Run tests with a specific tag
+behave --tags=@smoke
 
-To run tests with different configurations, such as specific browsers or in headless mode, use the `--browser` and `--headless` flags. By default, headless mode is disabled (False):
+# Exclude tests with a specific tag
+behave --tags=~@skip
 
-```sh
-pytest --browser=firefox --headless
+# Run tests with multiple tags (AND condition)
+behave --tags=@smoke --tags=@critical
+
+# Run tests with multiple tags (OR condition)
+behave --tags=@smoke,@critical
 ```
 
-## Useful Links
+### Running with Parameters
 
-- [Pytest Documentation](https://docs.pytest.org/en/latest/)
-- [Running Tests with Pytest](https://docs.pytest.org/en/latest/how-to/usage.html)
+```bash
+# Run with a specific browser
+behave -D browser=firefox
+
+# Run in headless mode
+behave -D headless=true
+
+# Combined run
+behave -D browser=webkit -D headless=true tests/features
+```
+
+### Generating Allure Reports
+
+```bash
+# Display allure report
+allure serve allure-results

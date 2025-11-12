@@ -120,3 +120,4 @@ class DialogHandler:
             logger.info(f"Text entered in prompt: {text}")
         else:
             logger.warning("Text input is only valid for prompt dialogs.")
+

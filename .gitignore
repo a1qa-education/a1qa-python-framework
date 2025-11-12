@@ -13,4 +13,5 @@ htmlcov/
 /shelf/
 /workspace.xml
 .allure/
+allure-results/
 .env
