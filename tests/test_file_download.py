@@ -13,6 +13,6 @@ from pages.main_page import MainPage
 @pytest.mark.usefixtures("cleanup_download_dir")
 class TestFileDownload:
 
-    def test_file_download(self, browser: Browser, test_file_name: str, download_dir: Path):
+    def test_check_that_file_downloaded(self, browser: Browser, test_file_name: str, download_dir: Path):
         # Implement test case:
         pass

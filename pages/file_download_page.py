@@ -10,13 +10,11 @@ from framework.ui.pages.base_page import BasePage
 class FileDownloadPage(BasePage):
 
     def __init__(self, page: Page):
-        header_locator = page.locator('h3:has-text("File Downloader")')
-        super().__init__(page, header_locator, "File Downloader page")
-
-        self._file_locator_template = '[href="download/{}"]'
+        unique_element = Label(page, page.get_by_text("File Downloader", exact=True), "File Downloader Page Header")
+        super().__init__(page, unique_element, "File Downloader page")
 
     def get_file_link(self, file_name: str) -> Label:
-        return Label(self.page, self._file_locator_template.format(file_name), f"Download link for '{file_name}'")
+        return Label(self.page, self.page.get_by_text(file_name), f"Download link for '{file_name}'")
 
     @step("Check if download link for file is displayed")
     def is_file_enabled(self, file_name: str) -> bool:

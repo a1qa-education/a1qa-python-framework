@@ -8,8 +8,8 @@ from framework.ui.pages.base_page import BasePage
 class BasicAuthPage(BasePage):
 
     def __init__(self, page: Page):
-        header_locator = page.locator('h3:has-text("Basic Auth")')
-        super().__init__(page, header_locator, "Basic Auth Page")
+        unique_element = Label(page, page.get_by_text("Basic Auth", exact=True), "Basic Auth Page Header")
+        super().__init__(page, unique_element, "Basic Auth Page")
 
         self._auth_message = Label(page, "#content p", "Auth message")
 

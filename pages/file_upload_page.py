@@ -13,12 +13,12 @@ from framework.ui.pages.base_page import BasePage
 class FileUploadPage(BasePage):
 
     def __init__(self, page: Page):
-        header_locator = page.locator('h3:has-text("File Uploader")')
-        super().__init__(page, header_locator, "File Uploader page")
+        unique_element = Label(page, page.get_by_text("File Uploader", exact=True), "File Uploader Page Header")
+        super().__init__(page, unique_element, "File Uploader page")
 
-        self._file_input = FileUploader(self._page, "#file-upload", "File uploader element")
-        self._upload_btn = Button(self._page, "#file-submit", "Upload button")
-        self._uploaded_files_lbl = Label(self._page, "#uploaded-files", "Upload text panel")
+        self._file_input = FileUploader(self._page, self.page.locator("#file-upload"), "File uploader element")
+        self._upload_btn = Button(self._page, self.page.locator("#file-submit"), "Upload button")
+        self._uploaded_files_lbl = Label(self._page, self.page.locator("#uploaded-files"), "Upload text panel")
 
     @step("Upload files")
     def upload_file(self, file_path: Union[pathlib.Path, str]):

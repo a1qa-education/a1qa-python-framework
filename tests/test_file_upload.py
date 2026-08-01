@@ -8,6 +8,8 @@ from pages.file_upload_page import FileUploadPage
 from pages.main_page import MainPage
 
 
+FILE_NAME = "test.txt"
+
 @pytest.mark.file_upload
 class TestFileUpload:
 
