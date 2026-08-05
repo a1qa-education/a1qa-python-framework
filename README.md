@@ -17,7 +17,9 @@ A framework for test automation using the Behavior Driven Development (BDD) appr
 │   │   └── pages/          # BasePage class
 │   └── utils/              # Utilities (EnvProvider, ConfigParser)
 ├── pages/                  # Application-specific Page Objects
-├── tests/                  # Application-specific Test Scripts
+├── tests/                  
+│   └── features/           # BDD Feature files and Behave environment hooks
+│       └── steps/          # Step definition implementations
 ```
 
 ## 🛠️ Technologies
@@ -51,7 +53,7 @@ Before running the tests for the first time, you must configure your local envir
 3. Open your new `.env` file and populate it with the actual credentials.
 
 If you forget to set this up, the framework's `EnvProvider` will explicitly halt test execution and warn you.
-```
+
 
 ### Running Tests by Tags
 
