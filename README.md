@@ -2,6 +2,24 @@
 
 A framework for test automation using the Behavior Driven Development (BDD) approach.
 
+## Project Structure
+
+```
+├── .env.example            # Template for environment variables (secrets)
+├── configs/                # Configuration files (settings.py, test_data.json)
+├── framework/              # Core framework components
+│   ├── logger/             # Custom logging implementation
+│   ├── ui/                 # UI components
+│   │   ├── browser/        # Browser and Window management
+│   │   ├── constants/      # Timeouts, element states, etc.
+│   │   ├── decorators/     # @step and @action decorators
+│   │   ├── elements/       # UI element wrappers (Button, TextBox, etc.)
+│   │   └── pages/          # BasePage class
+│   └── utils/              # Utilities (EnvProvider, ConfigParser)
+├── pages/                  # Application-specific Page Objects
+├── tests/                  # Application-specific Test Scripts
+```
+
 ## 🛠️ Technologies
 
 - ![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square&logo=python)
@@ -23,6 +41,16 @@ behave
 ```bash
 # Run specific feature
 behave tests/features/your_test_feature.feature
+```
+
+## Environment Setup (Secrets Management)
+
+Before running the tests for the first time, you must configure your local environment:
+1. Locate the `.env.example` file in the root directory.
+2. Duplicate this file and rename the copy to `.env` (this file is ignored by Git).
+3. Open your new `.env` file and populate it with the actual credentials.
+
+If you forget to set this up, the framework's `EnvProvider` will explicitly halt test execution and warn you.
 ```
 
 ### Running Tests by Tags

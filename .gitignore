@@ -18,3 +18,5 @@ htmlcov/
 .allure/
 allure-results/
 .env
+downloads/
+*.png
