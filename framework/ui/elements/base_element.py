@@ -144,7 +144,14 @@ class BaseElement(ABC):
         :param y: The Y coordinate to drop the element.
         """
         logger.debug(f"Drag and drop element {self} to target position: {{x: {x}, y:{y}}}")
-        self.locator.drag_to(target_position={"x": x, "y": y})
+        box = self.locator.bounding_box()
+        if box:
+            start_x = box["x"] + box["width"] / 2
+            start_y = box["y"] + box["height"] / 2
+            self._page.mouse.move(start_x, start_y)
+            self._page.mouse.down()
+            self._page.mouse.move(x, y)
+            self._page.mouse.up()
 
     @action('Move to {element}')
     def move_to(self) -> None:

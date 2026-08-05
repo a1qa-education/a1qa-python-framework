@@ -37,21 +37,7 @@ class BasePage:
         """Non-blocking visibility snapshot (matches JS isPageOpened)."""
         return self._unique_element.state.is_displayed()
 
-    def click_and_switch_to_new_tab(self, element: BaseElement) -> Page:
-        """
-        Clicks an element that opens a new tab and switches to it.
 
-        :param element: Element to click that opens a new tab.
-        :return: The new Page object representing the newly opened tab.
-        """
-        logger.debug(f"Click on element '{element._name}' to open a new tab.")
-        with self.page.context.expect_page() as new_page_info:
-            element.click()
-        new_page = new_page_info.value
-        new_page.wait_for_load_state(state="load", timeout=Timeouts.WAIT_PAGE_LOAD)
-        self.page = new_page
-        logger.info("Switched to new tab.")
-        return new_page
 
     def wait_for_page_to_load(self) -> None:
         """Wait for the page's unique element to become visible."""
