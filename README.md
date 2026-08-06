@@ -52,11 +52,11 @@ Before running the tests for the first time, every developer/student must config
 3. Open your new `.env` file and populate it with the actual credentials required for the test environments:
 
 ```env
-TEST_USER=tomsmith
-TEST_PASSWORD=SuperSecretPassword!
+TEST_USER=test
+TEST_PASSWORD=test
 
-BASIC_AUTH_USER=admin
-BASIC_AUTH_PASSWORD=admin
+BASIC_AUTH_USER=test
+BASIC_AUTH_PASSWORD=test
 ```
 
 If you forget to set this up or miss a variable, the framework's `EnvProvider` will explicitly halt test execution and warn you to check your `.env` file.

@@ -17,3 +17,7 @@ htmlcov/
 .env
 downloads/
 *.png
+allure-results/
+allure-report/
+test-results/
+playwright-report/
