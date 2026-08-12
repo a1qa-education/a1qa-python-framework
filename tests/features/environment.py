@@ -11,14 +11,14 @@ from behave import use_fixture
 from behave.model_core import Status
 from playwright.sync_api import sync_playwright
 
-from configs.settings import DEFAULT_CONFIGURATION_FILE
+from configs.settings import DEFAULT_CONFIGURATION_FILE, TEST_APP_URL
 from framework.logger import logger
 from framework.ui.browser.browser import Browser
 from framework.ui.browser.window import DEFAULT_VIEWPORT_SIZE
-from framework.ui.constants.timeouts import WaitTimeoutsMs
-from tests.fixtures import register_dialog_handler
+from framework.ui.constants.timeouts import Timeouts
+from tests.features.fixtures import register_dialog_handler
 
-PROJECT_ROOT_DIR = Path(__file__).parent.parent.resolve()
+PROJECT_ROOT_DIR = Path(__file__).parent.parent.parent.resolve()
 
 FIXTURES = {
     "register_dialog_handler": register_dialog_handler,
@@ -40,7 +40,7 @@ def _get_browser(playwright: sync_playwright, browser_type: BrowserType, headles
     browser = browser_map.get(browser_type, playwright.chromium)
     browser_instance = browser.launch(headless=headless)
     context = browser_instance.new_context(viewport=DEFAULT_VIEWPORT_SIZE)
-    context.set_default_timeout(WaitTimeoutsMs.WAIT_PAGE_LOAD)
+    context.set_default_timeout(Timeouts.WAIT_PAGE_LOAD)
 
     page = context.new_page()
 
@@ -62,34 +62,51 @@ def before_all(context):
     logging.info("Test logging successfully configured for test execution.")
 
     context.test_config = parse_config(config_file)
+    context.playwright = sync_playwright().start()
+
+def after_all(context):
+    if hasattr(context, 'playwright') and context.playwright:
+        context.playwright.stop()
 
 
 def before_feature(context, feature):
     """Setup environment before each feature."""
-    context.playwright = sync_playwright().start()
+    for tag in feature.tags:
+        use_fixture_by_tag(tag, context)
+
+
+class PageFactory:
+    def __init__(self, page):
+        self.page = page
+        self._pages = {}
+
+    def get_page(self, page_class):
+        key = page_class.__name__
+        if key not in self._pages:
+            self._pages[key] = page_class(self.page)
+        return self._pages[key]
+
+
+def before_scenario(context, scenario):
+    """Setup environment before each scenario."""
     context.browser = _get_browser(
         context.playwright,
         BrowserType(context.browser_type),
         context.headless
     )
-    for tag in feature.tags:
-        use_fixture_by_tag(tag, context)
+    context.page_factory = PageFactory(context.browser.page)
 
-
-def after_feature(context, feature):
-    if hasattr(context, 'browser') and context.browser:
-        context.browser.page.close()
-        context.browser.page.context.browser.close()
-
-    if hasattr(context, 'playwright') and context.playwright:
-        context.playwright.stop()
-
-
-def before_scenario(context, scenario):
-    """Setup environment before each scenario.    """
     for tag in scenario.tags:
         use_fixture_by_tag(tag, context)
 
+    context.browser.open_url(TEST_APP_URL)
+
+
+def after_scenario(context, scenario):
+    """Teardown environment after each scenario."""
+    if hasattr(context, 'browser') and context.browser:
+        context.browser.page.close()
+        context.browser.page.context.browser.close()
 
 def after_step(context, step):
     if step.status == Status.failed:

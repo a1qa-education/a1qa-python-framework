@@ -3,7 +3,6 @@ TEST_APP_URL = "https://the-internet.herokuapp.com"
 
 # Configuration
 DEFAULT_CONFIGURATION_FILE = "configs/test_data/configuration.json"
-
 # Default Paths
 DEFAULT_RESOURCE_DIR = "./resources"
 DEFAULT_DOWNLOAD_DIR = "./downloads"
