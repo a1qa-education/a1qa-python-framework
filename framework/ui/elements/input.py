@@ -16,6 +16,11 @@ class Input(BaseElement):
     def __init__(self, page: Page, locator: Union[Locator, str], name: str):
         super().__init__(page, locator, name, element_type=ElementType.INPUT)
 
+    @action("Clear {element}")
+    def clear(self) -> None:
+        """Clears the input field."""
+        self.locator.fill("")
+
     @action("Type text into {element}")
     def type_text(self, value: str) -> None:
         """Types the given text into the input field."""

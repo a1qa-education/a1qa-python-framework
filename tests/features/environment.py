@@ -24,6 +24,35 @@ FIXTURES = {
     "register_dialog_handler": register_dialog_handler,
 }
 
+TRUE_VALUES = {"1", "true", "yes", "on"}
+FALSE_VALUES = {"0", "false", "no", "off"}
+
+
+def get_bool_userdata(userdata, name: str, default: bool = False) -> bool:
+    """
+    Read a boolean flag from the behave userdata.
+
+    Replaces ``userdata.getbool()``, which relies on ``distutils`` and therefore
+    fails on Python 3.12+.
+
+    :param userdata: Behave userdata mapping.
+    :param name: Name of the flag, e.g. 'headless'.
+    :param default: Value to use when the flag was not passed.
+    :return: Parsed boolean value.
+    """
+    value = userdata.get(name)
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+
+    normalized = str(value).strip().lower()
+    if normalized in TRUE_VALUES:
+        return True
+    if normalized in FALSE_VALUES:
+        return False
+    raise ValueError(f"Cannot parse '{name}={value}' as a boolean value")
+
 
 class BrowserType(Enum):
     CHROMIUM = "chromium"
@@ -55,7 +84,7 @@ def before_all(context):
 
     userdata = context.config.userdata
     context.browser_type = userdata.get('browser', BrowserType.CHROMIUM.value)
-    context.headless = userdata.getbool('headless', False)
+    context.headless = get_bool_userdata(userdata, 'headless', False)
     config_file = userdata.get('config', DEFAULT_CONFIGURATION_FILE)
 
     logger.setup_logger()
