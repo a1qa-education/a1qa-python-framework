@@ -4,6 +4,7 @@ from typing import List, Dict
 from playwright.sync_api import Page
 
 from framework.ui.decorators.decorators import step
+from framework.ui.elements.label import Label
 from framework.ui.elements.table import Table
 from framework.ui.pages.base_page import BasePage
 
@@ -15,7 +16,7 @@ CURRENCY_SYMBOL = "$"
 class DataTablesPage(BasePage):
 
     def __init__(self, page: Page):
-        header_locator = page.locator('h3:has-text("Data Tables")')
+        header_locator = Label(page, page.locator('h3:has-text("Data Tables")'), "Data Tables Page Header")
         super().__init__(page, header_locator, "Data Tables Page")
 
         self._table_1 = Table(page, "table#table1", "Table 1")

@@ -9,7 +9,7 @@ from framework.ui.pages.base_page import BasePage
 class JavaScriptAlertsPage(BasePage):
 
     def __init__(self, page: Page):
-        header_locator = page.locator('h3:has-text("JavaScript Alerts")')
+        header_locator = Label(page, page.locator('h3:has-text("JavaScript Alerts")'), "JavaScript Alerts Page Header")
         super().__init__(page, header_locator, "JavaScript Alerts Page")
 
         self._js_alert_button = Button(page, page.locator('[onclick="jsAlert()"]'), "Click for JS Alerts Button")

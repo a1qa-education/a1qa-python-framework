@@ -5,12 +5,12 @@ import time
 from pathlib import Path
 from typing import Union
 
-from framework.constants.timeouts import Timeouts
+from framework.ui.constants.timeouts import Timeouts
 
 logger = logging.getLogger(__name__)
 
 
-def is_file_exist(file_path: Union[Path, str], timeout: int = Timeouts.WAIT_FILE_DOWNLOAD) -> bool:
+def is_file_exist(file_path: Union[Path, str], timeout: int = Timeouts.FILE_DOWNLOAD // 1000) -> bool:
     """
     Check whether the file exists within the timeout.
     """
@@ -32,8 +32,8 @@ def remove_dir_if_exist(path: Union[Path, str]) -> None:
         shutil.rmtree(path)
 
 
-def wait_for_file_exists(file_path: Union[str, Path], timeout: int = Timeouts.WAIT_FILE_DOWNLOAD,
-                         polling_interval: int = Timeouts.POLLING_INTERVAL) -> None:
+def wait_for_file_exists(file_path: Union[str, Path], timeout: int = Timeouts.FILE_DOWNLOAD // 1000,
+                         polling_interval: int = Timeouts.POLLING_INTERVAL_S) -> None:
     """
     Wait until a file exists within the given timeout.
 

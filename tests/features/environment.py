@@ -16,12 +16,13 @@ from framework.logger import logger
 from framework.ui.browser.browser import Browser
 from framework.ui.browser.window import DEFAULT_VIEWPORT_SIZE
 from framework.ui.constants.timeouts import Timeouts
-from tests.features.fixtures import register_dialog_handler
+from tests.features.fixtures import cleanup_download_dir, register_dialog_handler
 
 PROJECT_ROOT_DIR = Path(__file__).parent.parent.parent.resolve()
 
 FIXTURES = {
     "register_dialog_handler": register_dialog_handler,
+    "cleanup_download_dir": cleanup_download_dir,
 }
 
 
