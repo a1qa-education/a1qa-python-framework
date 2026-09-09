@@ -106,14 +106,14 @@ def before_feature(context, feature):
 
 
 class PageFactory:
-    def __init__(self, page):
-        self.page = page
+    def __init__(self, browser: Browser):
+        self._browser = browser
         self._pages = {}
 
     def get_page(self, page_class):
-        key = page_class.__name__
+        key = (page_class.__name__, id(self._browser.page))
         if key not in self._pages:
-            self._pages[key] = page_class(self.page)
+            self._pages[key] = page_class(self._browser.page)
         return self._pages[key]
 
 
@@ -124,7 +124,7 @@ def before_scenario(context, scenario):
         BrowserType(context.browser_type),
         context.headless
     )
-    context.page_factory = PageFactory(context.browser.page)
+    context.page_factory = PageFactory(context.browser)
 
     for tag in scenario.tags:
         use_fixture_by_tag(tag, context)
