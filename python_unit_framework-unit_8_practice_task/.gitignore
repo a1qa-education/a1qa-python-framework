@@ -1,6 +1,0 @@
-__pycache__/
-.pytest_cache/
-test-results/
-.venv/
-.env
-*.log

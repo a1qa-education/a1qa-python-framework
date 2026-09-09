@@ -1,63 +1,143 @@
-# Automated Testing Project
+# Steam Store E2E Automation Framework
 
-This project is designed for automated testing using Playwright and Pytest frameworks. It is architecturally aligned with the JS Playwright and Aquality frameworks.
+## Project Overview
 
-## Project Structure
+This project contains an automated End-to-End test for Steam Store search and filtering functionality.
 
+The original test (`SteamLegacyTest`) was implemented as a single monolithic script containing:
+
+- Hardcoded test data
+- Long procedural flows
+- Fragile XPath locators
+- Manual synchronization logic
+- Duplicated code
+- Poor maintainability
+
+The objective of this project was to modernize the automation solution while preserving the original business validation logic.
+
+---
+
+# Test Case
+
+### STEAM-TC-001
+
+**Title:** Filtering by platform/mode and validating ascending price sorting (Lowest Price)
+
+**Priority:** High
+
+### Preconditions
+
+- Browser launched in Incognito mode
+- Navigate to https://store.steampowered.com/
+- Interface language is English
+
+### Test Steps
+
+| Step | Action | Expected Result |
+|------|---------|----------------|
+| 1 | Enter "Action" into the main search bar and press Enter. | Search results page opens. Game list is not empty. |
+| 2 | In the right sidebar (Narrow by OS), check the Windows checkbox. | Checkbox is checked. Results update dynamically. |
+| 3 | In the right sidebar (Narrow by number of players), check the Co-op checkbox. | Checkbox is checked. Results update with both filters applied. |
+| 4 | Click Sort by dropdown and select "Lowest Price". | List updates. Games are ordered cheapest to most expensive. |
+| 5 | Extract Game Title + Final Price for the first 10 items. | Data extracted. Free games read as 0.00. Discounted games use final price only. |
+| 6 | Verify the collected array of 10 prices is sorted in ascending order. | Each price is ≥ the previous one. |
+
+### Expected Result
+
+The collected list of prices is sorted from the lowest price to the highest price.
+
+---
+
+---
+
+## Assignment Goals
+
+### Phase 1: AI Code Audit
+
+Perform an AI-assisted review of the legacy implementation and identify:
+
+- Architectural issues
+- Anti-patterns
+- Code smells
+- Flaky synchronization
+- Brittle locators
+- Maintainability concerns
+
+All findings must be documented in:
+
+```text
+PROMPTS.md
 ```
-├── .env.example            # Template for environment variables (secrets)
-├── configs/                # Configuration files (settings.py, test_data.json)
-├── framework/              # Core framework components
-│   ├── logger/             # Custom logging implementation
-│   ├── ui/                 # UI components
-│   │   ├── browser/        # Browser and Window management
-│   │   ├── constants/      # Timeouts, element states, etc.
-│   │   ├── decorators/     # @step and @action decorators
-│   │   ├── elements/       # UI element wrappers (Button, TextBox, etc.)
-│   │   └── pages/          # BasePage class
-│   └── utils/              # Utilities (EnvProvider, ConfigParser)
-├── pages/                  # Application-specific Page Objects
-├── tests/                  # Application-specific Test Scripts
-├── conftest.py             # Pytest fixtures and browser initialization
-└── pytest.ini              # Pytest configuration and markers
-```
 
-## Installing Dependencies
+### Phase 2: Decoupling & Architecture
 
-To get started, install the necessary dependencies by running command:
+Refactor the monolithic implementation using Page Object Model.
 
-```sh
-pip install -r requirements.txt
-```
+Requirements:
 
-## Environment Setup (Secrets Management)
+- Separate page interactions into Page Objects
+- Move test data outside test logic
+- Extract reusable utilities
+- Preserve existing business validations
 
-Before running the tests for the first time, you must configure your local environment:
-1. Locate the `.env.example` file in the root directory.
-2. Duplicate this file and rename the copy to `.env` (this file is ignored by Git).
-3. Open your new `.env` file and populate it with the actual credentials.
+### Phase 3: Stabilization & Refactoring
 
-If you forget to set this up, the framework's `EnvProvider` will explicitly halt test execution and warn you.
+Address all issues identified during the audit:
 
-## Running Tests with Markers
+- Replace unstable locators
+- Remove hardcoded waits
+- Simplify data extraction logic
+- Refactor custom sorting logic
+- Improve readability and maintainability
 
-You can run tests using markers with the `-m` flag. For example, to run the demo test:
+---
 
-```sh
-pytest -m demo
-```
+## Deliverables
 
-For more details of running tests with Pytest, see [Running Tests with Pytest](https://docs.pytest.org/en/latest/how-to/usage.html).
+### 1. Modernized Project Structure
 
-## Running Tests with different options
+- Tests
+- Page Objects
+- Utils
+- Test Data
 
-To run tests with different configurations, such as specific browsers or in headless mode, use the `--browser` and `--headless` flags. By default, headless mode is disabled (False):
+### 2. Stable Automated Test
 
-```sh
-pytest --browser=firefox --headless
-```
+The refactored test must reliably validate:
 
-## Useful Links
+- Search functionality
+- OS filtering
+- Player-count filtering
+- Price sorting
 
-- [Pytest Documentation](https://docs.pytest.org/en/latest/)
-- [Running Tests with Pytest](https://docs.pytest.org/en/latest/how-to/usage.html)
+### 3. PROMPTS.md
+
+Must contain:
+
+- AI audit prompts
+- Audit results
+- Refactoring prompts
+- Architecture recommendations
+- Stabilization notes
+
+---
+
+## Definition of Done
+
+- Original STEAM-TC-001 business scenario preserved
+- Test successfully refactored into POM architecture
+- Test data extracted from test logic
+- Utilities separated into reusable modules
+- Hardcoded waits removed
+- Stable locators implemented
+- Sorting validation preserved
+- AI review documented in PROMPTS.md
+- Test executes reliably and consistently
+
+---
+
+## Technologies
+
+- Python 3.10+
+- Pytest
+- Playwright
