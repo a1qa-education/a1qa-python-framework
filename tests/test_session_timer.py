@@ -5,7 +5,7 @@ from framework.ui.browser.browser import Browser
 from pages.main_page import MainPage
 
 EXPECTED_TIMER_VALUE = "00:00:00"
-TIMER_DELAY_MS = 700
+TIMER_DELAY_MS = 825
 
 
 @pytest.mark.unit_4
