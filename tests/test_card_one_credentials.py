@@ -31,6 +31,7 @@ class TestCardOneCredentials:
         self._fill_credentials(sign_up_form, first_card_creds)
         sign_up_form.click_next_button()
 
+        assert interests_form.is_interests_title_displayed(), "Interests card should be displayed"
         assert interests_form.get_page_indicator_text() == SECOND_CARD_INDICATOR
 
     def test_check_email_domain_extensions(
@@ -53,7 +54,7 @@ class TestCardOneCredentials:
             self._fill_credentials(sign_up_form, creds)
             sign_up_form.click_next_button()
 
-            interests_form.wait_for_page_to_load()
+            assert interests_form.is_interests_title_displayed(), "Interests card should be displayed"
             assert interests_form.get_page_indicator_text() == SECOND_CARD_INDICATOR
 
     @staticmethod

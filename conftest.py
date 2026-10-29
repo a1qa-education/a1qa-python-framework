@@ -56,7 +56,7 @@ def pytest_configure():
     logging.info("Test logging successfully configured for test execution.")
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def browser(request):
     browser_channel = request.config.getoption("--browser")
     headless = request.config.getoption("--headless")
@@ -69,7 +69,7 @@ def browser(request):
         browser_instance.page.context.browser.close()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def set_basic_auth(browser: Browser):
     from framework.utils.env_provider import EnvProvider
     browser.set_basic_authentication(EnvProvider.basic_auth_user(), EnvProvider.basic_auth_password())
