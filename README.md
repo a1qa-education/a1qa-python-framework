@@ -5,7 +5,6 @@ This project is designed for automated testing using Playwright and Pytest frame
 ## Project Structure
 
 ```
-├── .env.example            # Template for environment variables (secrets)
 ├── configs/                # Configuration files (settings.py, test_data.json)
 ├── framework/              # Core framework components
 │   ├── logger/             # Custom logging implementation
@@ -24,27 +23,19 @@ This project is designed for automated testing using Playwright and Pytest frame
 
 ## Installing Dependencies
 
-To get started, install the necessary dependencies by running command:
+Requirements: Python 3.10+ and Chrome/Chromium (installed by Playwright).
 
 ```sh
 pip install -r requirements.txt
+playwright install chromium
 ```
-
-## Environment Setup (Secrets Management)
-
-Before running the tests for the first time, you must configure your local environment:
-1. Locate the `.env.example` file in the root directory.
-2. Duplicate this file and rename the copy to `.env` (this file is ignored by Git).
-3. Open your new `.env` file and populate it with the actual credentials.
-
-If you forget to set this up, the framework's `EnvProvider` will explicitly halt test execution and warn you.
 
 ## Running Tests with Markers
 
-You can run tests using markers with the `-m` flag. For example, to run the demo test:
+You can run tests using markers with the `-m` flag. For example, to run the Unit 4 suite:
 
 ```sh
-pytest -m demo
+pytest -m unit_4
 ```
 
 For more details of running tests with Pytest, see [Running Tests with Pytest](https://docs.pytest.org/en/latest/how-to/usage.html).
@@ -63,6 +54,8 @@ pytest --browser=firefox --headless
 - [Running Tests with Pytest](https://docs.pytest.org/en/latest/how-to/usage.html)
 
 ## Unit 4 Practice Task
+
+The starter suite has no reporter. Add Allure yourself as part of the task.
 
 Run the Unit 4 suite in Chromium:
 
