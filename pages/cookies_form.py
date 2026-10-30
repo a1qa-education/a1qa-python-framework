@@ -11,7 +11,7 @@ class CookiesForm(BasePage):
         super().__init__(page, unique_element, "Cookies Form")
         self._accept_cookies_button = Button(
             page,
-            "//button[text()='Not really,no']",
+            page.get_by_role("button", name="Not really,no", exact=True),
             "Accept cookies button",
         )
 
