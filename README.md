@@ -55,8 +55,6 @@ pytest --browser=firefox --headless
 
 ## Unit 4 Practice Task
 
-The starter suite has no reporter. Add Allure yourself as part of the task.
-
 Run the Unit 4 suite in Chromium:
 
 ```sh
